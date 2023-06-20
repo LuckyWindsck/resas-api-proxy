@@ -1,0 +1,4 @@
+{
+  "*.{mjs,ts}": "yarn linter --fix",
+  "*": "yarn formatter --write"
+}
