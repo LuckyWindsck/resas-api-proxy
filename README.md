@@ -1,24 +1,26 @@
 # resas-api-proxy
 
-A simple proxy server for RESAS-API
+A simple proxy server for [RESAS-API](https://opendata.resas-portal.go.jp/) deploying on [Vercel](https://vercel.com/)
 
 ## Project Setup
 
 ```sh
 yarn install
-cp .env.template .env.local # and then fill in your RESAS API key in .env.local
+yarn vercel deploy
+yarn vercel env add RESAS_API_KEY # enter your API Key and select neccessary environment
+yarn git connect # if you fork this repo
 ```
 
-### Compile and Hot-Reload for Development
+### Development
 
 ```sh
-yarn dev
+yarn vercel dev
 ```
 
-### Type-Check, Compile and Minify for Production
+### Deploy to vercel
 
 ```sh
-yarn build
+yarn vercel deploy
 ```
 
 ### Lint with [ESLint](https://eslint.org/)

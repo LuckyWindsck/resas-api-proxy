@@ -51,7 +51,7 @@ const jsFileConfig = {
 }
 
 const tsFileConfig = {
-  files: ['*.config.ts', 'src/**/*.ts', 'api/**/*.ts'],
+  files: ['*.config.ts', 'api/**/*.ts'],
   languageOptions: {
     ecmaVersion: 'latest',
     sourceType: 'module',
@@ -72,26 +72,16 @@ const tsFileConfig = {
     import: eslintImport,
     '@typescript-eslint': typescript,
   },
-  rules: (() => {
-    const rules = {
-      ...js.configs.recommended.rules,
-      ...airbnbBase.rules,
-      ...typescript.configs['eslint-recommended'].overrides[0].rules,
-      ...typescript.configs.recommended.rules,
-      ...typescript.configs['recommended-requiring-type-checking'].rules,
-      // Fix: https://github.com/iamturns/eslint-config-airbnb-typescript/issues/320
-      ..._.cloneDeep(airbnbTypesciptBase.rules),
-      ...airbnbTypesciptBase.overrides.rules,
-    }
-
-    rules['import/order'][1].alphabetize = { order: 'asc' }
-    rules['import/order'][1]['newlines-between'] = 'always'
-
-    // Allow importing devDependencies in *.config.ts
-    rules['import/no-extraneous-dependencies'][1].devDependencies.push('*.config.ts')
-
-    return rules
-  })(),
+  rules: {
+    ...js.configs.recommended.rules,
+    ...airbnbBase.rules,
+    ...typescript.configs['eslint-recommended'].overrides[0].rules,
+    ...typescript.configs.recommended.rules,
+    ...typescript.configs['recommended-requiring-type-checking'].rules,
+    // Fix: https://github.com/iamturns/eslint-config-airbnb-typescript/issues/320
+    ..._.cloneDeep(airbnbTypesciptBase.rules),
+    ...airbnbTypesciptBase.overrides.rules,
+  },
   settings: {
     ...airbnbBase.settings,
     ...airbnbTypesciptBase.settings,
