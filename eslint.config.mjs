@@ -51,7 +51,7 @@ const jsFileConfig = {
 }
 
 const tsFileConfig = {
-  files: ['*.config.ts', 'src/**/*.ts'],
+  files: ['*.config.ts', 'src/**/*.ts', 'api/**/*.ts'],
   languageOptions: {
     ecmaVersion: 'latest',
     sourceType: 'module',
