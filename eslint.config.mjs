@@ -1,14 +1,15 @@
-import path from 'path'
-import { fileURLToPath } from 'url'
-import globals from 'globals'
+/* eslint-disable no-param-reassign */
 import js from '@eslint/js'
 import typescript from '@typescript-eslint/eslint-plugin'
 import typescriptParser from '@typescript-eslint/parser'
-import prettierConfig from 'eslint-config-prettier'
 import airbnbBaseConfig from 'eslint-config-airbnb-base'
-import _ from 'lodash'
-import eslintImport from 'eslint-plugin-import'
 import airbnbTypescriptComfig from 'eslint-config-airbnb-typescript'
+import prettierConfig from 'eslint-config-prettier'
+import eslintImport from 'eslint-plugin-import'
+import globals from 'globals'
+import _ from 'lodash'
+import path from 'path'
+import { fileURLToPath } from 'url'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -33,22 +34,19 @@ const jsFileConfig = {
   plugins: {
     import: eslintImport,
   },
-  rules: {
-    ...js.configs.recommended.rules,
-    ...airbnbBase.rules,
-    // Allow __filename & __dirname to use underscore in variable name
-    'no-underscore-dangle': (() => {
-      const rule = airbnbBase.rules['no-underscore-dangle']
-      rule[1] = { allow: ['__filename', '__dirname'] }
-      return rule
-    })(),
-    // Allow importing devDependencies in eslint.config.mjs
-    'import/no-extraneous-dependencies': (() => {
-      const rule = airbnbBase.rules['import/no-extraneous-dependencies']
-      rule[1].devDependencies.push('eslint.config.mjs')
-      return rule
-    })(),
-  },
+  rules: (() => {
+    const rules = {
+      ...js.configs.recommended.rules,
+      ...airbnbBase.rules,
+    }
+
+    rules['no-underscore-dangle'][1].allow = ['__filename', '__dirname']
+
+    // Allow importing devDependencies in *.config.ts
+    rules['import/no-extraneous-dependencies'][1].devDependencies.push('eslint.config.mjs')
+
+    return rules
+  })(),
   settings: airbnbBase.settings,
 }
 
@@ -74,16 +72,26 @@ const tsFileConfig = {
     import: eslintImport,
     '@typescript-eslint': typescript,
   },
-  rules: {
-    ...js.configs.recommended.rules,
-    ...airbnbBase.rules,
-    ...typescript.configs['eslint-recommended'].overrides[0].rules,
-    ...typescript.configs.recommended.rules,
-    ...typescript.configs['recommended-requiring-type-checking'].rules,
-    // Fix: https://github.com/iamturns/eslint-config-airbnb-typescript/issues/320
-    ..._.cloneDeep(airbnbTypesciptBase.rules),
-    ...airbnbTypesciptBase.overrides.rules,
-  },
+  rules: (() => {
+    const rules = {
+      ...js.configs.recommended.rules,
+      ...airbnbBase.rules,
+      ...typescript.configs['eslint-recommended'].overrides[0].rules,
+      ...typescript.configs.recommended.rules,
+      ...typescript.configs['recommended-requiring-type-checking'].rules,
+      // Fix: https://github.com/iamturns/eslint-config-airbnb-typescript/issues/320
+      ..._.cloneDeep(airbnbTypesciptBase.rules),
+      ...airbnbTypesciptBase.overrides.rules,
+    }
+
+    rules['import/order'][1].alphabetize = { order: 'asc' }
+    rules['import/order'][1]['newlines-between'] = 'always'
+
+    // Allow importing devDependencies in *.config.ts
+    rules['import/no-extraneous-dependencies'][1].devDependencies.push('*.config.ts')
+
+    return rules
+  })(),
   settings: {
     ...airbnbBase.settings,
     ...airbnbTypesciptBase.settings,
